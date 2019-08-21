@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Bind & Map</title>
+  </head>
+  <body>
+    <script>
+      let user = {
+        name: "Vasia",
+        surname: "Pupkin",
+        helloUser: function(a, b) {
+          return (
+            "Hello " +
+            this.name +
+            " " +
+            this.surname +
+            "!" +
+            " From: " +
+            a +
+            " " +
+            b +
+            " Country."
+          );
+        }
+      };
+
+      let user1 = {
+        name: "Oleg",
+        surname: "Nojkin"
+      };
+
+      let user2 = {
+        name: "Igor",
+        surname: "Ruchkin"
+      };
+
+      let someThing = user.helloUser.bind(user2, "Oslo", "Norway- Bind");
+      // console.log(someThing());
+
+      // console.log(user.helloUser.call(user1, "Oslo", "Norway- Call"));
+
+      // My Bind
+
+      let bind = function(fnInput, context) {
+        let bindArgs = Array.prototype.slice.call(arguments, 2);
+        return function() {
+          return fnInput.apply(context, bindArgs);
+        };
+      };
+
+      let aB = bind(user.helloUser, user2, "Oslo", "Norway");
+
+      console.log(aB());
+
+      // My Map !!!
+
+      let names = ["HTML", "CSS", "JavaScript"];
+
+      let myMap = function(arr, callback, thisArg) {
+        let result = [];
+        for (let i = 0; i < arr.length; i++) {
+          result.push(callback.call(thisArg, arr[i], i, arr));
+        }
+        return result;
+      };
+      let myNameLength = myMap(names, function(item) {
+        return item.length;
+      });
+      console.log(myNameLength);
+    </script>
+  </body>
+</html>
